@@ -149,7 +149,7 @@ namespace HelloFunnyTools
                 trans.Commit();
             }
 
-            return false;
+            return turn;
         }
     }
 }
