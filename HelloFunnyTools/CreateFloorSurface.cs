@@ -39,12 +39,18 @@ namespace HelloFunnyTools
                 return Result.Failed;
             }
             //创建楼板面层
+
+
             FloorType ft = doc.GetElement(new ElementId(339)) as FloorType;
             bool result = CreateSurface(doc, ft, curveArrayList);
             if (result == false)
             {
                 message = "创建楼板失败";
                 return Result.Failed;
+            }
+            else
+            {
+                TaskDialog.Show("Revit", "楼板创建成功");
             }
 
             return Result.Succeeded;
@@ -84,11 +90,12 @@ namespace HelloFunnyTools
             foreach (Element element in roomList)
             {
                 Room room = element as Room;
-                SpatialElementBoundaryOptions seBoundaryOption = new SpatialElementBoundaryOptions();
+                // 存储房间最大轮廓
                 CurveArray curveArray = new CurveArray();
-                IList<IList<BoundarySegment>> roomBoundaryListList = room.GetBoundarySegments(seBoundaryOption);
+                //用于判定最大房间轮廓
                 List<CurveLoop> curveLoopList = new List<CurveLoop>();
-
+                //获得房间边界
+                IList<IList<BoundarySegment>> roomBoundaryListList = room.GetBoundarySegments(new SpatialElementBoundaryOptions());
                 //获取所有边界
                 if (roomBoundaryListList != null)
                 {
@@ -148,8 +155,7 @@ namespace HelloFunnyTools
                 }
                 trans.Commit();
             }
-
-            return false;
+            return true;
         }
     }
 }
