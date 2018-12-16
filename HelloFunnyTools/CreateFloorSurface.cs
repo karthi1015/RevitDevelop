@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.DB.Architecture;
-
+using CreateFloor;
 namespace HelloFunnyTools
 {
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
@@ -39,7 +39,8 @@ namespace HelloFunnyTools
                 return Result.Failed;
             }
             //创建楼板面层
-
+           // MainWindow mainWindow = new CreateFloor.MainWindow();
+           // mainWindow.ShowDialog();
 
             FloorType ft = doc.GetElement(new ElementId(339)) as FloorType;
             bool result = CreateSurface(doc, ft, curveArrayList);

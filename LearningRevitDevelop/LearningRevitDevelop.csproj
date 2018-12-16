@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateDoorFamilyinstance.cs" />
+    <Compile Include="CreateWorkset.cs" />
     <Compile Include="CreatLevel.cs" />
     <Compile Include="FilterWall.cs" />
     <Compile Include="GetAllElementParameters.cs" />

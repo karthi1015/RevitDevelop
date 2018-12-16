@@ -133,8 +133,12 @@ F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\bin\x64\Debug\pt-BR\AdWindo
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\bin\x64\Debug\ru-RU\AdWindows.resources.dll
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\bin\x64\Debug\zh-CN\AdWindows.resources.dll
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\bin\x64\Debug\zh-TW\AdWindows.resources.dll
-F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csprojAssemblyReference.cache
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csproj.CoreCompileInputs.cache
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csproj.CopyComplete
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.dll
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.pdb
+F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\MainWindow.g.cs
+F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools_MarkupCompile.cache
+F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools_MarkupCompile.lref
+F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\MainWindow.baml
+F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.g.resources
