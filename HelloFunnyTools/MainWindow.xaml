@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CreateFloor"
         mc:Ignorable="d"
-        Title="创建楼板设置" Height="435" Width="255">
+        Title="创建楼板设置" Height="640" Width="360" Loaded="Window_Loaded">
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -30,7 +30,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="属性名称 " FontSize="18" HorizontalAlignment="Right"  VerticalAlignment="Center"/>
                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Width="120" Height="30" VerticalAlignment="Center" 
-                          Name="parameterNameCombo" ItemsPanel="{Binding}"
+                          Name="parameterNameCombo" ItemsSource="{Binding}"
                           SelectionChanged="ParameterNameCombo_SelectionChanged"/>
             </Grid>
             <Grid Grid.Row="2" Grid.ColumnSpan="2">
@@ -40,7 +40,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="属性值 " FontSize="18" HorizontalAlignment="Right"  VerticalAlignment="Center"/>
                 <ComboBox Grid.Column="1" HorizontalAlignment="Left" Width="120" Height="30" VerticalAlignment="Center"
-                          Name="parameterValue" ItemsSource="{Binding}"/>
+                          Name="parameterValueCombo" ItemsSource="{Binding}"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="1">
@@ -65,6 +65,6 @@
             </Grid>
         </Grid>
         <Button Content="确定" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Height="30" 
-                 Name="enter" Click="Button_Click"/>
+                 Name="enter" Click="Enter_Click"/>
     </Grid>
 </Window>

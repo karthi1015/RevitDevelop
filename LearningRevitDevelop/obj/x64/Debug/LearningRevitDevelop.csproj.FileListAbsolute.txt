@@ -74,4 +74,3 @@ F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\Learning
 F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.csproj.CopyComplete
 F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.dll
 F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.pdb
-F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.csprojAssemblyReference.cache

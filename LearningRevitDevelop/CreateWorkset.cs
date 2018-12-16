@@ -25,7 +25,7 @@ namespace HelloFunnyTools
 
             foreach (string newworksetName in newWorkList)
             {
-                bool result = (WorksetTable.IsWorksetNameUnique(doc, newworksetName);
+                bool result = (WorksetTable.IsWorksetNameUnique(doc, newworksetName));
                 if (result == false)
                 {
                     message = "有重复的工作集名称。";

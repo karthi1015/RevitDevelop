@@ -27,11 +27,14 @@ namespace CreateFloor
             this.roomList = roomList;
             parameterNameCombo.ItemsSource = parameterNameList;
             floorTypeCombo.ItemsSource = floortypeList;
+
         }
 
         private void ParameterNameCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string paraName = parameterNameCombo.SelectedItem.ToString();
+            List<string> parameterValueList = new List<string>();
+            parameterValueList.Add("全部生成");
             foreach (Room room in roomList)
             {
                 ParameterMap paraMap = room.ParametersMap;
@@ -39,15 +42,42 @@ namespace CreateFloor
                 {
                     if (para.Definition.Name == paraName)
                     {
-
+                        if (para.HasValue)
+                        {
+                            string value;
+                            if (para.StorageType == StorageType.String)
+                            {
+                                value = para.AsString();
+                            }
+                            else
+                            {
+                                value = para.AsValueString();
+                            }
+                            if (!(parameterValueList.Contains(value)))
+                            {
+                                parameterValueList.Add(value);
+                            }
+                        }
                     }
                 }
             }
+            parameterValueCombo.ItemsSource = parameterValueList;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Enter_Click(object sender, RoutedEventArgs e)
         {
+            if ((parameterNameCombo.SelectedItem != null) && (parameterValueCombo.SelectedItem != null) && (floorTypeCombo.SelectedItem != null))
+            {
+                this.DialogResult = true;
+                this.Close();
+            }
+        }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            parameterNameCombo.SelectedIndex = 0;
+            parameterValueCombo.SelectedIndex = 0;
+            floorTypeCombo.SelectedIndex = 0;
         }
     }
 }

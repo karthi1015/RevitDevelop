@@ -24,14 +24,20 @@ namespace HelloFunnyTools
                 message = "项目中没有房间类型";
                 return Result.Failed;
             }
-            //获取楼板
+            //过滤楼板
             List<Element> floorList = FloorList(doc);
             if (!(floorList.Count > 0))
             {
                 message = "项目中没有楼板类型";
                 return Result.Failed;
             }
-            //获取房间边界线
+            //弹出对话框，让用户选择添加楼板面层的房间和楼板面层的类型
+            List<string> createSetting = ShowDialog(roomList, floorList);
+            if (!(createSetting.Count > 0))
+            {
+                return Result.Cancelled;
+            }
+            //获取房间轮廓
             List<CurveArray> curveArrayList = RoomBoundaryList(roomList);
             if (!(curveArrayList.Count > 0))
             {
@@ -39,9 +45,6 @@ namespace HelloFunnyTools
                 return Result.Failed;
             }
             //创建楼板面层
-           // MainWindow mainWindow = new CreateFloor.MainWindow();
-           // mainWindow.ShowDialog();
-
             FloorType ft = doc.GetElement(new ElementId(339)) as FloorType;
             bool result = CreateSurface(doc, ft, curveArrayList);
             if (result == false)
@@ -53,7 +56,6 @@ namespace HelloFunnyTools
             {
                 TaskDialog.Show("Revit", "楼板创建成功");
             }
-
             return Result.Succeeded;
         }
         /// <summary>
@@ -157,6 +159,32 @@ namespace HelloFunnyTools
                 trans.Commit();
             }
             return true;
+        }
+
+        private List<string> ShowDialog(List<Element> roomlist, List<Element> floorTypeList)
+        {
+            List<string> value = new List<string>();
+
+            List<Room> roomslist = roomlist.ConvertAll(x => x as Room); //将一个对象转换成另外一种对象
+            List<string> parameterName = new List<string>();
+            ParameterMap paraMap = roomlist.First().ParametersMap;
+            foreach (Parameter para in paraMap)
+            {
+                parameterName.Add(para.Definition.Name);
+            }
+
+            List<string> floorTypesList = floorTypeList.ConvertAll(x => x.Name);
+
+            MainWindow mainWindow = new CreateFloor.MainWindow(parameterName, roomslist, floorTypesList);
+
+            if (mainWindow.ShowDialog() == true)
+            {
+                value.Add(mainWindow.parameterNameCombo.SelectedItem.ToString());
+                value.Add(mainWindow.parameterValueCombo.SelectedItem.ToString());
+                value.Add(mainWindow.floorTypeCombo.SelectedItem.ToString());
+                return value;
+            }
+            return value;
         }
     }
 }

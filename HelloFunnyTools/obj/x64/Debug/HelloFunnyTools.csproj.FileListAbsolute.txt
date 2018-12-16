@@ -142,3 +142,4 @@ F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyToo
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools_MarkupCompile.lref
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\MainWindow.baml
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.g.resources
+F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csprojAssemblyReference.cache
