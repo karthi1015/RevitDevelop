@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-
+using Autodesk.Revit.DB.Architecture;
 namespace HelloFunnyTools
 {
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
@@ -15,7 +15,8 @@ namespace HelloFunnyTools
         {
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = uidoc.Document;
-
+            Workset workset = null;
+            List<Element> elementList = new List<Element>();
             List<string> newWorkList = new List<string> { "1", "2", "3", "4", "5" };
             if (!doc.IsWorkshared)
             {
@@ -29,14 +30,17 @@ namespace HelloFunnyTools
                 if (result == false)
                 {
                     message = "有重复的工作集名称。";
-                    return Result.Failed;
+                    return Result.Succeeded;
                 }
                 if (result == true)
                 {
-                    CreateWorksets(doc, newworksetName);
+                    workset = CreateWorksets(doc, newworksetName);
                 }
             }
             TaskDialog.Show("Revit", "工作集创建成功");
+            elementList = FilterElement(doc);
+            AddElementToWorkset(doc, workset, elementList);
+
             return Result.Succeeded;
         }
 
@@ -46,14 +50,53 @@ namespace HelloFunnyTools
         /// <param name="doc"></param>
         /// <param name="worksetName">输入工作集名称</param>
         /// <returns></returns>
-        public void CreateWorksets(Document doc, string worksetName)
+        public Workset CreateWorksets(Document doc, string worksetName)
         {
+            Workset newWorksets = null;
             using (Transaction trans = new Transaction(doc, "创建工作集"))
             {
                 trans.Start();
-                Workset.Create(doc, worksetName);
+                newWorksets = Workset.Create(doc, worksetName);
                 trans.Commit();
             }
+            return newWorksets;
+        }
+
+        public void AddElementToWorkset(Document doc, Workset workset, List<Element> element)
+        {
+            if (workset != null)
+            {
+                int worksetId = workset.Id.IntegerValue;
+                using (Transaction trans = new Transaction(doc, "将图元添加到指定工作集"))
+                {
+                    trans.Start();
+                    foreach (Element ele in element)
+                    {
+                        Parameter wspara = ele.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM);
+                        if (wspara != null)
+                        {
+                            wspara.Set(worksetId);
+                        }
+                    }
+                    trans.Commit();
+                }
+            }
+            if (workset == null)
+            {
+                TaskDialog.Show("Revit", "工作集为空");
+            }
+        }
+
+        public List<Element> FilterElement(Document doc)
+        {
+            FilteredElementCollector doorCollector = new FilteredElementCollector(doc);
+            doorCollector.OfCategory(BuiltInCategory.OST_Doors).OfClass(typeof(FamilyInstance));
+            List<Element> doorList = new List<Element>();
+            foreach (Element door in doorCollector)
+            {
+                doorList.Add(door);
+            }
+            return doorList;
         }
     }
 }

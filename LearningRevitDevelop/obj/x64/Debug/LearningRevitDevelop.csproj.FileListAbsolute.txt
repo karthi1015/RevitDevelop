@@ -74,3 +74,6 @@ F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\Learning
 F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.csproj.CopyComplete
 F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.dll
 F:\VisualStudioDocument\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.pdb
+E:\github库\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.dll
+E:\github库\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.pdb
+E:\github库\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.csprojResolveAssemblyReference.cache
