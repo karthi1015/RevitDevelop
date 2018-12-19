@@ -69,6 +69,7 @@
     <Compile Include="CreateWorkset.cs" />
     <Compile Include="CreatLevel.cs" />
     <Compile Include="FilterWall.cs" />
+    <Compile Include="FindIntersectionElement.cs" />
     <Compile Include="GetAllElementParameters.cs" />
     <Compile Include="GetElementByFilter.cs" />
     <Compile Include="HelloRevit.cs" />

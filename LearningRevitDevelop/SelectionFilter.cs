@@ -28,7 +28,7 @@ namespace LearningRevitDevelop
 
         public class WallSelecitonFilter : ISelectionFilter
         {
-            Document document = null;
+            Document document;
             public WallSelecitonFilter(Document doc)
             {
                 doc = document;

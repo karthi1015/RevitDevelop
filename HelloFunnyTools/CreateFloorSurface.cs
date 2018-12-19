@@ -39,15 +39,18 @@ namespace HelloFunnyTools
                 return Result.Cancelled;
             }
             //获取房间轮廓
-            List<CurveArray> curveArrayList = RoomBoundaryList(roomList);
+            List<Element> roomsList = new List<Element>();
+            List<CurveArray> curveArrayList = RoomBoundaryList(roomList, createSetting, out roomsList);
             if (!(curveArrayList.Count > 0))
             {
                 message = "项目中没有有效的房间轮廓";
                 return Result.Failed;
             }
+
+
             //创建楼板面层
-            FloorType ft = doc.GetElement(new ElementId(339)) as FloorType;
-            bool result = CreateSurface(doc, ft, curveArrayList);
+            FloorType ft = floorList.Where(x => x.Name == createSetting[2]).First() as FloorType;
+            bool result = CreateSurface(doc, ft, curveArrayList, roomsList);
             if (result == false)
             {
                 message = "创建楼板失败";
@@ -76,7 +79,7 @@ namespace HelloFunnyTools
         /// </summary>
         /// <param name="doc"></param>
         /// <returns></returns>
-        public List<Element> FloorList(Document doc)
+        private List<Element> FloorList(Document doc)
         {
             FilteredElementCollector floorCollcter = new FilteredElementCollector(doc);
             floorCollcter.OfCategory(BuiltInCategory.OST_Floors).OfClass(typeof(FloorType));
@@ -88,10 +91,49 @@ namespace HelloFunnyTools
         /// </summary>
         /// <param name="roomList"></param>
         /// <returns></returns>
-        private List<CurveArray> RoomBoundaryList(List<Element> roomList)
+        private List<CurveArray> RoomBoundaryList(List<Element> roomList, List<string> createSetting, out List<Element> roomsToCreate)
         {
+            //获取指定房间
+            List<Element> roomsList = new List<Element>();
+            string paraName = createSetting[0];
+            string paraValue = createSetting[1];
+            if (paraValue != "全部生成")
+            {
+                foreach (Element ele in roomList)
+                {
+                    ParameterMap paraMap = ele.ParametersMap;
+                    foreach (Parameter para in paraMap)
+                    {
+                        if (para.Definition.Name == paraName)
+                        {
+                            if (para.HasValue)
+                            {
+                                string value;
+                                if (para.StorageType == StorageType.String)
+                                {
+                                    value = para.AsString();
+                                }
+                                else
+                                {
+                                    value = para.AsValueString();
+                                }
+                                if (paraValue == value)
+                                {
+                                    roomsList.Add(ele);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                roomsList = roomList;
+            }
+
             List<CurveArray> curveArraysList = new List<CurveArray>();
-            foreach (Element element in roomList)
+            roomsToCreate = new List<Element>();
+            foreach (Element element in roomsList)
             {
                 Room room = element as Room;
                 // 存储房间最大轮廓
@@ -112,6 +154,10 @@ namespace HelloFunnyTools
                         }
                         curveLoopList.Add(curveLoop);
                     }
+                }
+                if (curveLoopList.Count == 0)
+                {
+                    continue;
                 }
                 //获取房间边界的拉伸体体积
                 List<double> volumn = new List<double>();
@@ -137,6 +183,7 @@ namespace HelloFunnyTools
                     curveArray.Append(curve);
                 }
                 curveArraysList.Add(curveArray);
+                roomsToCreate.Add(element);
             }
 
             return curveArraysList;
@@ -144,18 +191,22 @@ namespace HelloFunnyTools
         /// <summary>
         /// 创建面层
         /// </summary>
-        /// <param name="doc">需要创建面层的文档</param>
+        /// <param name="doc">当前项目对象</param>
         /// <param name="floorType">楼板面层类型</param>
         /// <param name="roomBoundaryList">房间边界线List</param>
         /// <returns></returns>
-        private bool CreateSurface(Document doc, FloorType floorType, List<CurveArray> roomBoundaryList)
+        private bool CreateSurface(Document doc, FloorType floorType, List<CurveArray> roomBoundaryList, List<Element> roomsList)
         {
+            double thick = floorType.get_Parameter(BuiltInParameter.FLOOR_ATTR_DEFAULT_THICKNESS_PARAM).AsDouble();
             using (Transaction trans = new Transaction(doc, "生成楼板面层"))
             {
                 trans.Start();
-                foreach (CurveArray ca in roomBoundaryList)
+                for (int i = 0; i < roomBoundaryList.Count; i++)
                 {
-                    Floor floor = doc.Create.NewFloor(ca, false);
+                    Floor floor = doc.Create.NewFloor(roomBoundaryList[i], floorType, doc.GetElement(roomsList[i].Id) as Level, false);
+                    floor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM).Set(thick);
+                    floor.get_Parameter(BuiltInParameter.ALL_MODEL_MARK).Set(roomsList[i].get_Parameter(BuiltInParameter.ROOM_NUMBER).AsString());
+                    roomsList[i].get_Parameter(BuiltInParameter.ROOM_FINISH_FLOOR).Set(floor.Name);
                 }
                 trans.Commit();
             }
