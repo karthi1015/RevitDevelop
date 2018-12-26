@@ -153,3 +153,15 @@ E:\github库\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.dll
 E:\github库\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.pdb
 E:\github库\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csprojResolveAssemblyReference.cache
 F:\VisualStudioDocument\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csprojAssemblyReference.cache
+E:\RevitDevelop\HelloFunnyTools\bin\x64\Debug\HelloFunnyTools.dll
+E:\RevitDevelop\HelloFunnyTools\bin\x64\Debug\HelloFunnyTools.pdb
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csprojAssemblyReference.cache
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\MainWindow.g.cs
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools_MarkupCompile.cache
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools_MarkupCompile.lref
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\MainWindow.baml
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.g.resources
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csproj.CoreCompileInputs.cache
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.csproj.CopyComplete
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.dll
+E:\RevitDevelop\HelloFunnyTools\obj\x64\Debug\HelloFunnyTools.pdb

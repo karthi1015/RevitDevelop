@@ -31,7 +31,7 @@ namespace LearningRevitDevelop
             Document document;
             public WallSelecitonFilter(Document doc)
             {
-                doc = document;
+                document = doc;
             }
             public bool AllowElement(Element elem)
             {

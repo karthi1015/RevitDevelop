@@ -17,7 +17,7 @@ namespace HelloFunnyTools
             Document doc = uidoc.Document;
             Workset workset = null;
             List<Element> elementList = new List<Element>();
-            List<string> newWorkList = new List<string> { "1", "2", "3", "4", "5" };
+            List<string> newWorkList = new List<string> { "1", "2", "3", "4", "6" };
             if (!doc.IsWorkshared)
             {
                 message = "该项目不是中心文件。";
@@ -26,20 +26,17 @@ namespace HelloFunnyTools
 
             foreach (string newworksetName in newWorkList)
             {
-                bool result = (WorksetTable.IsWorksetNameUnique(doc, newworksetName));
-                if (result == false)
-                {
-                    message = "有重复的工作集名称。";
-                    return Result.Succeeded;
-                }
-                if (result == true)
-                {
-                    workset = CreateWorksets(doc, newworksetName);
-                }
+                workset = CreateWorksets(doc, newworksetName);
             }
+
             TaskDialog.Show("Revit", "工作集创建成功");
-            elementList = FilterElement(doc);
+            BuiltInCategory builtInCategory = BuiltInCategory.OST_Doors;
+            Type type = typeof(FamilyInstance);
+            string levelName = "Level 1";
+            Level level = GetLevel(doc, levelName);
+            elementList = FilterElement(doc, builtInCategory, type, level);
             AddElementToWorkset(doc, workset, elementList);
+
 
             return Result.Succeeded;
         }
@@ -47,21 +44,42 @@ namespace HelloFunnyTools
         /// <summary>
         /// 创建工作集
         /// </summary>
-        /// <param name="doc"></param>
+        /// <param name="doc">当前文档</param>
         /// <param name="worksetName">输入工作集名称</param>
-        /// <returns></returns>
+        /// <returns>新的工作集</returns>
         public Workset CreateWorksets(Document doc, string worksetName)
         {
             Workset newWorksets = null;
-            using (Transaction trans = new Transaction(doc, "创建工作集"))
+            if (WorksetTable.IsWorksetNameUnique(doc, worksetName))
             {
-                trans.Start();
-                newWorksets = Workset.Create(doc, worksetName);
-                trans.Commit();
+                using (Transaction trans = new Transaction(doc, "创建工作集"))
+                {
+                    trans.Start();
+                    newWorksets = Workset.Create(doc, worksetName);
+                    trans.Commit();
+                }
+            }
+            //判定是否有重名的工作集
+            else
+            {
+                FilteredWorksetCollector worksetCollector = new FilteredWorksetCollector(doc);
+                IList<Workset> worksetsList = worksetCollector.OfKind(WorksetKind.UserWorkset).ToWorksets();
+                foreach (Workset workset in worksetsList)
+                {
+                    if (workset.Name.Contains(worksetName))
+                    {
+                        return workset;
+                    }
+                }
             }
             return newWorksets;
         }
-
+        /// <summary>
+        /// 添加图元到指定工作集
+        /// </summary>
+        /// <param name="doc">当前项目</param>
+        /// <param name="workset">要添加图元的工作集</param>
+        /// <param name="element">要操作的图元</param>
         public void AddElementToWorkset(Document doc, Workset workset, List<Element> element)
         {
             if (workset != null)
@@ -86,17 +104,60 @@ namespace HelloFunnyTools
                 TaskDialog.Show("Revit", "工作集为空");
             }
         }
-
-        public List<Element> FilterElement(Document doc)
+        /// <summary>
+        /// 获取标高
+        /// </summary>
+        /// <param name="doc">当前文档</param>
+        /// <param name="levelName">标高名字</param>
+        /// <returns>标高</returns>
+        public Level GetLevel(Document doc, string levelName)
         {
-            FilteredElementCollector doorCollector = new FilteredElementCollector(doc);
-            doorCollector.OfCategory(BuiltInCategory.OST_Doors).OfClass(typeof(FamilyInstance));
-            List<Element> doorList = new List<Element>();
-            foreach (Element door in doorCollector)
+            FilteredElementCollector levelCollector = new FilteredElementCollector(doc);
+            levelCollector.OfCategory(BuiltInCategory.OST_Levels).OfClass(typeof(Level));
+            Level level = null;
+            if (levelCollector.Count() != 0)
             {
-                doorList.Add(door);
+                foreach (Level le in levelCollector)
+                {
+                    if (le.Name == levelName)
+                    {
+                        level = le;
+                    }
+                }
             }
-            return doorList;
+            else
+            {
+
+            }
+            return level;
+        }
+
+        /// <summary>
+        /// 过滤要添加的图元
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns>过滤的图元列表</returns>
+        public List<Element> FilterElement(Document doc, BuiltInCategory builtInCategory, Type type, Level level)
+        {
+
+            FilteredElementCollector elementCollector = new FilteredElementCollector(doc);
+            elementCollector.OfCategory(builtInCategory).OfClass(type);
+            List<Element> elementList = new List<Element>();
+            if (elementCollector.Count() != 0)
+            {
+                foreach (Element ele in elementCollector)
+                {
+                    if (ele.get_Parameter(BuiltInParameter.FAMILY_LEVEL_PARAM).Definition.Name == level.Name)
+                    {
+                        elementList.Add(ele);
+                    }
+                }
+            }
+            else
+            {
+
+            }
+            return elementList;
         }
     }
 }
