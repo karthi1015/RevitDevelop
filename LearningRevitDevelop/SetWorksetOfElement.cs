@@ -16,16 +16,31 @@ namespace LearningRevitDevelop
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = uidoc.Document;
             //让用户选择要标高，类别
+            ElementClassFilter classFilter = new ElementClassFilter(typeof(FamilyInstance));
+            ElementClassFilter hostObjectFilter = new ElementClassFilter(typeof(HostObject));
             Categories categories = doc.Settings.Categories;
-            FilteredElementCollector allElement = new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance));
+            FilteredElementCollector allElement = new FilteredElementCollector(doc);
+            FilteredElementCollector hostObjetElement = new FilteredElementCollector(doc);
             foreach (Category ca in categories)
             {
+
                 if (ca.CategoryType == CategoryType.Model)
                 {
-                    allElement.OfCategoryId(ca.Id);
+                    ElementCategoryFilter categoryFilter = new ElementCategoryFilter(ca.Id);
+                    LogicalOrFilter logicalOrFilter = new LogicalOrFilter(categoryFilter, classFilter);
+                    LogicalOrFilter host_object = new LogicalOrFilter(hostObjectFilter, categoryFilter);
+                    hostObjetElement.WherePasses(hostObjectFilter);
+                    allElement.WherePasses(logicalOrFilter).UnionWith(hostObjetElement);
                 }
             }
-            TaskDialog.Show("Revit", allElement.Count().ToString());
+            StringBuilder sb = new StringBuilder();
+            foreach (Element ele in allElement)
+            {
+                sb.Append(ele.GetType().Name + "\n\t");
+            }
+            TaskDialog.Show("Revit", sb.ToString());
+
+            // TaskDialog.Show("Revit", allElement.Count().ToString());
 
             //List<Element> levelsList = GetAllLevels(doc);
 

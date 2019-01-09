@@ -82,3 +82,7 @@ E:\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.csproj.C
 E:\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.csproj.CopyComplete
 E:\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.dll
 E:\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.pdb
+F:\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.csproj.CoreCompileInputs.cache
+F:\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.csproj.CopyComplete
+F:\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.dll
+F:\RevitDevelop\LearningRevitDevelop\obj\x64\Debug\LearningRevitDevelop.pdb
