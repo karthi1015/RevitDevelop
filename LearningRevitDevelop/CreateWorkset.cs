@@ -17,7 +17,8 @@ namespace HelloFunnyTools
             Document doc = uidoc.Document;
             Workset workset = null;
             List<Element> elementList = new List<Element>();
-            List<string> newWorkList = new List<string> { "1", "2", "3", "4", "6" };
+            // 让用户输入工作集名称 添加至list 批量生成工作集
+            List<string> newWorkList = new List<string> { "(01-1F-建筑-墙)", "02-1F-结构-墙", "03-1F-建筑-门", "04-1F-建筑-窗", "05-1F-建筑-柱" };
             if (!doc.IsWorkshared)
             {
                 message = "该项目不是中心文件。";
@@ -30,12 +31,12 @@ namespace HelloFunnyTools
             }
 
             TaskDialog.Show("Revit", "工作集创建成功");
-            BuiltInCategory builtInCategory = BuiltInCategory.OST_Doors;
-            Type type = typeof(FamilyInstance);
-            string levelName = "Level 1";
-            Level level = GetLevel(doc, levelName);
-            elementList = FilterElement(doc, builtInCategory, type, level);
-            AddElementToWorkset(doc, workset, elementList);
+            //BuiltInCategory builtInCategory = BuiltInCategory.OST_Doors;
+            //Type type = typeof(FamilyInstance);
+            //string levelName = "Level 1";
+            //Level level = GetLevel(doc, levelName);
+            //elementList = FilterElement(doc, builtInCategory, type, level);
+            //AddElementToWorkset(doc, workset, elementList);
 
 
             return Result.Succeeded;

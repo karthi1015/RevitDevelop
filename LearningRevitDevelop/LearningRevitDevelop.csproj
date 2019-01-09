@@ -74,8 +74,10 @@
     <Compile Include="GetElementByFilter.cs" />
     <Compile Include="HelloRevit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SayGoodBye.cs" />
     <Compile Include="SelectElement.cs" />
     <Compile Include="SelectionFilter.cs" />
+    <Compile Include="SetWorksetOfElement.cs" />
     <Compile Include="TestRibbonPanel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

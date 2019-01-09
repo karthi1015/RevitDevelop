@@ -25,14 +25,14 @@ namespace CreateFloor
         {
             InitializeComponent();
             this.roomList = roomList;
-            parameterNameCombo.ItemsSource = parameterNameList;
-            floorTypeCombo.ItemsSource = floortypeList;
+            parameterNameCombo.ItemsSource = parameterNameList;  //将参数名称列表绑定给参数选择项
+            floorTypeCombo.ItemsSource = floortypeList; //降楼板类型列表绑定给楼板选择项
 
         }
 
         private void ParameterNameCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string paraName = parameterNameCombo.SelectedItem.ToString();
+            string paraName = parameterNameCombo.SelectedItem.ToString();  //将参数选择项目转换为string类型
             List<string> parameterValueList = new List<string>();
             parameterValueList.Add("全部生成");
             foreach (Room room in roomList)
@@ -42,10 +42,10 @@ namespace CreateFloor
                 {
                     if (para.Definition.Name == paraName)
                     {
-                        if (para.HasValue)
+                        if (para.HasValue) //如果参数有值
                         {
                             string value;
-                            if (para.StorageType == StorageType.String)
+                            if (para.StorageType == StorageType.String) //如果参数的存储类型是string，那么将它赋值给value
                             {
                                 value = para.AsString();
                             }
