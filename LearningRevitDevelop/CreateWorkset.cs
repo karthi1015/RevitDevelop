@@ -105,33 +105,7 @@ namespace HelloFunnyTools
                 TaskDialog.Show("Revit", "工作集为空");
             }
         }
-        /// <summary>
-        /// 获取标高
-        /// </summary>
-        /// <param name="doc">当前文档</param>
-        /// <param name="levelName">标高名字</param>
-        /// <returns>标高</returns>
-        public Level GetLevel(Document doc, string levelName)
-        {
-            FilteredElementCollector levelCollector = new FilteredElementCollector(doc);
-            levelCollector.OfCategory(BuiltInCategory.OST_Levels).OfClass(typeof(Level));
-            Level level = null;
-            if (levelCollector.Count() != 0)
-            {
-                foreach (Level le in levelCollector)
-                {
-                    if (le.Name == levelName)
-                    {
-                        level = le;
-                    }
-                }
-            }
-            else
-            {
 
-            }
-            return level;
-        }
 
         /// <summary>
         /// 过滤要添加的图元
