@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Autodesk.Revit.UI.Selection;
+using System.Diagnostics;
 namespace LearningRevitDevelop
 {
     [Transaction(TransactionMode.Manual)]
@@ -16,8 +18,42 @@ namespace LearningRevitDevelop
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = uidoc.Document;
             //让用户选择要标高，类别
-            ElementClassFilter classFilter = new ElementClassFilter(typeof(FamilyInstance));
-            ElementClassFilter hostObjectFilter = new ElementClassFilter(typeof(HostObject));
+
+            List<Element> levelsList = GetAllLevels(doc);
+            List<Level> lelList = levelsList.ConvertAll(x => x as Level);
+
+
+
+            // TaskDialog.Show("Revit", elsList.Count().ToString());
+            List<Element> elsList = GetAllElements(doc);
+
+
+            StringBuilder sb = new StringBuilder();
+            Categories categories = doc.Settings.Categories;
+            List<FamilySymbol> famsysList = new List<FamilySymbol>();
+            foreach (Element el in elsList)
+            {
+                famsysList.Add(el as FamilySymbol);
+            }
+
+            TaskDialog.Show("Revit", sb.ToString());
+
+
+
+
+
+            return Result.Succeeded;
+        }
+        /// <summary>
+        /// 获取当前项目中的所有图元
+        /// </summary>
+        /// <param name="doc">当前项目</param>
+        /// <returns>图元列表</returns>
+        public List<Element> GetAllElements(Document doc)
+        {
+            List<Element> elementsList = new List<Element>();
+            ElementClassFilter fmistFilter = new ElementClassFilter(typeof(FamilyInstance));//获取族实例类型的图元
+            ElementClassFilter hostObjectFilter = new ElementClassFilter(typeof(HostObject));//获取宿主类型的图元
             Categories categories = doc.Settings.Categories;
             FilteredElementCollector allElement = new FilteredElementCollector(doc);
             FilteredElementCollector hostObjetElement = new FilteredElementCollector(doc);
@@ -27,25 +63,16 @@ namespace LearningRevitDevelop
                 if (ca.CategoryType == CategoryType.Model)
                 {
                     ElementCategoryFilter categoryFilter = new ElementCategoryFilter(ca.Id);
-                    LogicalOrFilter logicalOrFilter = new LogicalOrFilter(categoryFilter, classFilter);
+                    LogicalOrFilter logicalOrFilter = new LogicalOrFilter(categoryFilter, fmistFilter);
                     LogicalOrFilter host_object = new LogicalOrFilter(hostObjectFilter, categoryFilter);
                     hostObjetElement.WherePasses(hostObjectFilter);
                     allElement.WherePasses(logicalOrFilter).UnionWith(hostObjetElement);
                 }
             }
-            StringBuilder sb = new StringBuilder();
-            foreach (Element ele in allElement)
-            {
-                sb.Append(ele.GetType().Name + "\n\t");
-            }
-            TaskDialog.Show("Revit", sb.ToString());
-
-            // TaskDialog.Show("Revit", allElement.Count().ToString());
-
-            //List<Element> levelsList = GetAllLevels(doc);
-
-            return Result.Succeeded;
+            elementsList = allElement.ToList();
+            return elementsList;
         }
+
         /// <summary>
         /// 将图元添加进工作集
         /// </summary>
@@ -78,7 +105,6 @@ namespace LearningRevitDevelop
         }
 
 
-
         /// <summary>
         /// 获取当前文档的所有标高
         /// </summary>
@@ -91,7 +117,31 @@ namespace LearningRevitDevelop
             List<Element> levelsList = levelList.ToList();
             return levelsList;
         }
+        /// <summary>
+        /// 获取某标高上的模型图元
+        /// </summary>
+        /// <param name="doc">当前文档</param>
+        /// <param name="level">该标高</param>
+        /// <returns></returns>
+        public List<Element> GetElementOfLevel(Document doc, Level level)
+        {
+            ElementLevelFilter levelFilter = new ElementLevelFilter(level.Id, false);
+            FilteredElementCollector elements = new FilteredElementCollector(doc).WherePasses(levelFilter);
+            List<Element> elsList = new List<Element>();
+            if (elements.ToList().Count != 0)
+            {
+                foreach (Element el in elements)
+                {
+                    if (el.Category.CategoryType == CategoryType.Model)
+                    {
+                        elsList.Add(el);
+                    }
 
-        // public void GetElementOfLevel(Document doc,List)
+                }
+            }
+            return elsList;
+        }
     }
+
+
 }
