@@ -51,9 +51,9 @@ namespace CreateFloor
                             }
                             else
                             {
-                                value = para.AsValueString();
+                                value = para.AsValueString(); //否则直接添加他的value值
                             }
-                            if (!(parameterValueList.Contains(value)))
+                            if (!(parameterValueList.Contains(value)))   //如果parameterValueList没有包含Value 将它添加进list
                             {
                                 parameterValueList.Add(value);
                             }
